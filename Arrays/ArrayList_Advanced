@@ -1,0 +1,68 @@
+import java.util.*;
+
+public class ArrayList_Advanced {
+
+    // ==================================================
+    // Q1. Pair Sum in Rotated Sorted Array
+    // Concept: Circular Two Pointers + Modulo
+    // Time: O(n), Space: O(1)
+    // ==================================================
+    public static boolean pairSum2(ArrayList<Integer> list, int target) {
+        int n = list.size();
+        int bp = -1;
+
+        // Find breaking point
+        for (int i = 0; i < n - 1; i++) {
+            if (list.get(i) > list.get(i + 1)) {
+                bp = i;
+                break;
+            }
+        }
+
+        int lp = (bp + 1) % n;
+        int hp = bp;
+
+        while (lp != hp) {
+            int sum = list.get(lp) + list.get(hp);
+
+            if (sum == target) {
+                return true;
+            } else if (sum < target) {
+                lp = (lp + 1) % n;
+            } else {
+                hp = (n + hp - 1) % n;
+            }
+        }
+        return false;
+    }
+
+    // ==================================================
+    // Q2. Beautiful Array
+    // Concept: Divide & Conquer + Math
+    // Time: O(n), Space: O(n)
+    // ==================================================
+    public static ArrayList<Integer> beautifulArray(int n) {
+        ArrayList<Integer> result = new ArrayList<>();
+        result.add(1);
+
+        while (result.size() < n) {
+            ArrayList<Integer> temp = new ArrayList<>();
+
+            // Odd numbers
+            for (int num : result) {
+                if (2 * num - 1 <= n) {
+                    temp.add(2 * num - 1);
+                }
+            }
+
+            // Even numbers
+            for (int num : result) {
+                if (2 * num <= n) {
+                    temp.add(2 * num);
+                }
+            }
+            result = temp;
+        }
+        return result;
+    }
+}
