@@ -1,0 +1,113 @@
+import java.util.*;
+
+public class ArrayList_Basic {
+
+    // ==================================================
+    // Q1. Container With Most Water (Two Pointer Approach)
+    // Concept: Two Pointers + Greedy
+    // Time: O(n), Space: O(1)
+    // ==================================================
+    public static int storedWater(ArrayList<Integer> height) {
+        int maxWater = 0;
+        int lp = 0;
+        int hp = height.size() - 1;
+
+        while (lp < hp) {
+            int width = hp - lp;
+            int ht = Math.min(height.get(lp), height.get(hp));
+            int currWater = ht * width;
+            maxWater = Math.max(maxWater, currWater);
+
+            if (height.get(lp) < height.get(hp)) {
+                lp++;
+            } else {
+                hp--;
+            }
+        }
+        return maxWater;
+    }
+
+    // ==================================================
+    // Q2. Pair Sum in Sorted Array
+    // Concept: Two Pointer Technique
+    // Time: O(n), Space: O(1)
+    // ==================================================
+    public static boolean pairSum1(ArrayList<Integer> list, int target) {
+        int lp = 0;
+        int hp = list.size() - 1;
+
+        while (lp < hp) {
+            int sum = list.get(lp) + list.get(hp);
+
+            if (sum == target) {
+                return true;
+            } else if (sum < target) {
+                lp++;
+            } else {
+                hp--;
+            }
+        }
+        return false;
+    }
+
+    // ==================================================
+    // Q3. Find Lonely Numbers
+    // Concept: Sorting + Neighbor Comparison
+    // Time: O(n log n), Space: O(1)
+    // ==================================================
+    public static ArrayList<Integer> findLonely(ArrayList<Integer> nums) {
+        ArrayList<Integer> result = new ArrayList<>();
+        int n = nums.size();
+
+        if (n == 1) {
+            result.add(nums.get(0));
+            return result;
+        }
+
+        Collections.sort(nums);
+
+        for (int i = 1; i < n - 1; i++) {
+            if (nums.get(i - 1) + 1 < nums.get(i) &&
+                nums.get(i) + 1 < nums.get(i + 1)) {
+                result.add(nums.get(i));
+            }
+        }
+
+        // First element
+        if (nums.get(0) + 1 < nums.get(1)) {
+            result.add(nums.get(0));
+        }
+
+        // Last element
+        if (nums.get(n - 2) + 1 < nums.get(n - 1)) {
+            result.add(nums.get(n - 1));
+        }
+
+        return result;
+    }
+
+    // ==================================================
+    // Q4. Most Frequent Number After a Key
+    // Concept: Frequency Array
+    // Time: O(n), Space: O(1)
+    // ==================================================
+    public static int mostFrequent(ArrayList<Integer> nums, int key) {
+        int freq[] = new int[1001];
+        int max = 0;
+        int result = 0;
+
+        for (int i = 0; i < nums.size() - 1; i++) {
+            if (nums.get(i) == key) {
+                freq[nums.get(i + 1)]++;
+            }
+        }
+
+        for (int i = 0; i < freq.length; i++) {
+            if (freq[i] > max) {
+                max = freq[i];
+                result = i;
+            }
+        }
+        return result;
+    }
+}
