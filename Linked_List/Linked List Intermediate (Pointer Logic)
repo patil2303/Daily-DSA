@@ -1,0 +1,205 @@
+import java.util.*;
+
+public class LinkedList_Intermediate {
+
+    // ==================================================
+    // Node Structure
+    // ==================================================
+    public static class Node {
+        int data;
+        Node next;
+
+        public Node(int data) {
+            this.data = data;
+            this.next = null;
+        }
+    }
+
+    // ==================================================
+    // Basic Properties
+    // ==================================================
+    public static Node head;
+    public static Node tail;
+
+    // ==================================================
+    // Reverse Linked List
+    // ==================================================
+    public void reverse() {
+        Node prev = null;
+        Node curr = tail = head;
+        Node next;
+
+        while (curr != null) {
+            next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+        head = prev;
+    }
+
+    // ==================================================
+    // Remove Nth Node From End
+    // ==================================================
+    public void removeNthFromEnd(int n) {
+        int size = 0;
+        Node temp = head;
+
+        while (temp != null) {
+            temp = temp.next;
+            size++;
+        }
+
+        if (n == size) {
+            head = head.next;
+            return;
+        }
+
+        int i = 1;
+        Node prev = head;
+        while (i < size - n) {
+            prev = prev.next;
+            i++;
+        }
+
+        prev.next = prev.next.next;
+    }
+
+    // ==================================================
+    // Find Middle Node (Slow-Fast Pointer)
+    // ==================================================
+    public Node findMid(Node head) {
+        Node slow = head;
+        Node fast = head;
+
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        return slow;
+    }
+
+    // ==================================================
+    // Palindrome Check (Reverse Second Half)
+    // ==================================================
+    public boolean isPallindrome() {
+        if (head == null || head.next == null) {
+            return true;
+        }
+
+        // Find mid
+        Node mid = findMid(head);
+
+        // Reverse second half
+        Node prev = null;
+        Node curr = mid;
+        Node next;
+
+        while (curr != null) {
+            next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+
+        Node right = prev;
+        Node left = head;
+
+        while (right != null) {
+            if (left.data != right.data) {
+                return false;
+            }
+            left = left.next;
+            right = right.next;
+        }
+
+        return true;
+    }
+
+    // ==================================================
+    // Cycle Detection (Floyd’s Algorithm)
+    // ==================================================
+    public boolean isCycle() {
+        Node slow = head;
+        Node fast = head;
+
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+
+            if (slow == fast) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // ==================================================
+    // Remove Cycle
+    // ==================================================
+    public void removeCycle() {
+        Node slow = head;
+        Node fast = head;
+        boolean cycle = false;
+
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+
+            if (slow == fast) {
+                cycle = true;
+                break;
+            }
+        }
+
+        if (!cycle) return;
+
+        slow = head;
+        Node prev = null;
+
+        while (slow != fast) {
+            prev = fast;
+            slow = slow.next;
+            fast = fast.next;
+        }
+
+        prev.next = null;
+    }
+
+    // ==================================================
+    // Palindrome Check Using Stack
+    // ==================================================
+    public static boolean isPallindrome2(Node head) {
+        Stack<Integer> s = new Stack<>();
+        Node temp = head;
+
+        while (temp != null) {
+            s.push(temp.data);
+            temp = temp.next;
+        }
+
+        while (head != null) {
+            if (head.data != s.pop()) {
+                return false;
+            }
+            head = head.next;
+        }
+        return true;
+    }
+
+    // ==================================================
+    // Main Method (Testing)
+    // ==================================================
+    public static void main(String[] args) {
+        LinkedList_Intermediate ll = new LinkedList_Intermediate();
+
+        head = new Node(1);
+        head.next = new Node(2);
+        head.next.next = new Node(3);
+        head.next.next.next = new Node(2);
+        head.next.next.next.next = new Node(1);
+
+        System.out.println("Is Palindrome: " + ll.isPallindrome());
+        System.out.println("Is Palindrome (Stack): " + isPallindrome2(head));
+    }
+}
