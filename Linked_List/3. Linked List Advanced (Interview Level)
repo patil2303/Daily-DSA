@@ -1,0 +1,239 @@
+import java.util.*;
+
+public class LinkedList_Advanced {
+
+    // ==================================================
+    // Node Structure
+    // ==================================================
+    public static class Node {
+        int data;
+        Node next;
+
+        public Node(int data) {
+            this.data = data;
+            this.next = null;
+        }
+    }
+
+    // ==================================================
+    // Basic Property
+    // ==================================================
+    public static Node head;
+
+    // ==================================================
+    // Get Middle Node (used in merge sort & zigzag)
+    // ==================================================
+    public Node getMid(Node head) {
+        Node slow = head;
+        Node fast = head.next;
+
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        return slow;
+    }
+
+    // ==================================================
+    // Merge Two Sorted Linked Lists (Iterative)
+    // ==================================================
+    public Node merge(Node head1, Node head2) {
+        Node dummy = new Node(-1);
+        Node temp = dummy;
+
+        while (head1 != null && head2 != null) {
+            if (head1.data <= head2.data) {
+                temp.next = head1;
+                head1 = head1.next;
+            } else {
+                temp.next = head2;
+                head2 = head2.next;
+            }
+            temp = temp.next;
+        }
+
+        if (head1 != null) temp.next = head1;
+        if (head2 != null) temp.next = head2;
+
+        return dummy.next;
+    }
+
+    // ==================================================
+    // Merge Sort on Linked List
+    // ==================================================
+    public Node mergeSort(Node head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+
+        Node mid = getMid(head);
+        Node rightHead = mid.next;
+        mid.next = null;
+
+        Node left = mergeSort(head);
+        Node right = mergeSort(rightHead);
+
+        return merge(left, right);
+    }
+
+    // ==================================================
+    // Zig-Zag Linked List
+    // ==================================================
+    public void zigZag() {
+        if (head == null || head.next == null) return;
+
+        // Step 1: Find mid
+        Node mid = getMid(head);
+
+        // Step 2: Reverse second half
+        Node curr = mid.next;
+        mid.next = null;
+        Node prev = null, next;
+
+        while (curr != null) {
+            next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+
+        // Step 3: Alternate merge
+        Node left = head;
+        Node right = prev;
+        Node nextL, nextR;
+
+        while (left != null && right != null) {
+            nextL = left.next;
+            left.next = right;
+
+            nextR = right.next;
+            right.next = nextL;
+
+            left = nextL;
+            right = nextR;
+        }
+    }
+
+    // ==================================================
+    // Intersection Point of Two Linked Lists
+    // ==================================================
+    public Node getIntersection(Node head1, Node head2) {
+        while (head2 != null) {
+            Node temp = head1;
+            while (temp != null) {
+                if (temp == head2) {
+                    return head2;
+                }
+                temp = temp.next;
+            }
+            head2 = head2.next;
+        }
+        return null;
+    }
+
+    // ==================================================
+    // Skip M Nodes and Delete N Nodes
+    // ==================================================
+    public void skipMdeleteN(Node head, int M, int N) {
+        Node curr = head;
+        Node temp;
+        int count;
+
+        while (curr != null) {
+            // Skip M nodes
+            for (count = 1; count < M && curr != null; count++) {
+                curr = curr.next;
+            }
+
+            if (curr == null) return;
+
+            // Delete N nodes
+            temp = curr.next;
+            for (count = 1; count <= N && temp != null; count++) {
+                temp = temp.next;
+            }
+
+            curr.next = temp;
+            curr = temp;
+        }
+    }
+
+    // ==================================================
+    // Swap Nodes Without Swapping Data
+    // ==================================================
+    public void swapNodes(int x, int y) {
+        if (x == y) return;
+
+        Node prevX = null, currX = head;
+        while (currX != null && currX.data != x) {
+            prevX = currX;
+            currX = currX.next;
+        }
+
+        Node prevY = null, currY = head;
+        while (currY != null && currY.data != y) {
+            prevY = currY;
+            currY = currY.next;
+        }
+
+        if (currX == null || currY == null) return;
+
+        if (prevX != null) prevX.next = currY;
+        else head = currY;
+
+        if (prevY != null) prevY.next = currX;
+        else head = currX;
+
+        Node temp = currX.next;
+        currX.next = currY.next;
+        currY.next = temp;
+    }
+
+    // ==================================================
+    // Merge Two Sorted Lists (Recursive)
+    // ==================================================
+    public Node mergeSortedLists(Node head1, Node head2) {
+        if (head1 == null) return head2;
+        if (head2 == null) return head1;
+
+        if (head1.data <= head2.data) {
+            head1.next = mergeSortedLists(head1.next, head2);
+            return head1;
+        } else {
+            head2.next = mergeSortedLists(head1, head2.next);
+            return head2;
+        }
+    }
+
+    // ==================================================
+    // Print Linked List
+    // ==================================================
+    public void printList(Node head) {
+        Node temp = head;
+        while (temp != null) {
+            System.out.print(temp.data + " -> ");
+            temp = temp.next;
+        }
+        System.out.println("null");
+    }
+
+    // ==================================================
+    // Main Method (Testing)
+    // ==================================================
+    public static void main(String[] args) {
+        LinkedList_Advanced ll = new LinkedList_Advanced();
+
+        head = new Node(1);
+        head.next = new Node(2);
+        head.next.next = new Node(3);
+        head.next.next.next = new Node(4);
+        head.next.next.next.next = new Node(5);
+
+        System.out.print("Original: ");
+        ll.printList(head);
+
+        ll.zigZag();
+        System.out.print("ZigZag:   ");
+        ll.printList(head);
+    }
+}
