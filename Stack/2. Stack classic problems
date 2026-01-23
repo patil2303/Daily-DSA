@@ -1,0 +1,111 @@
+import java.util.*;
+
+public class Stack_Day2_Classic {
+
+    // ==================================================
+    // Stock Span Problem
+    // Concept: Monotonic Stack (Indexes)
+    // ==================================================
+    public static void stockSpan(int stocks[], int span[]) {
+        Stack<Integer> s = new Stack<>();
+        span[0] = 1;
+        s.push(0);
+
+        for (int i = 1; i < stocks.length; i++) {
+            while (!s.isEmpty() && stocks[s.peek()] <= stocks[i]) {
+                s.pop();
+            }
+
+            span[i] = s.isEmpty() ? (i + 1) : (i - s.peek());
+            s.push(i);
+        }
+    }
+
+    // ==================================================
+    // Next Greater Element
+    // Concept: Monotonic Stack (Right to Left)
+    // ==================================================
+    public static int[] nextGreater(int arr[]) {
+        int n = arr.length;
+        int nextGreater[] = new int[n];
+        Stack<Integer> s = new Stack<>();
+
+        for (int i = n - 1; i >= 0; i--) {
+            while (!s.isEmpty() && s.peek() <= arr[i]) {
+                s.pop();
+            }
+
+            nextGreater[i] = s.isEmpty() ? -1 : s.peek();
+            s.push(arr[i]);
+        }
+        return nextGreater;
+    }
+
+    // ==================================================
+    // Valid Parentheses
+    // ==================================================
+    public static boolean isValid(String str) {
+        Stack<Character> s = new Stack<>();
+
+        for (int i = 0; i < str.length(); i++) {
+            char ch = str.charAt(i);
+
+            if (ch == '(' || ch == '{' || ch == '[') {
+                s.push(ch);
+            } else {
+                if (s.isEmpty()) return false;
+
+                if ((ch == ')' && s.peek() == '(') ||
+                    (ch == '}' && s.peek() == '{') ||
+                    (ch == ']' && s.peek() == '[')) {
+                    s.pop();
+                } else {
+                    return false;
+                }
+            }
+        }
+        return s.isEmpty();
+    }
+
+    // ==================================================
+    // Duplicate Parentheses
+    // ==================================================
+    public static boolean isDuplicate(String str) {
+        Stack<Character> s = new Stack<>();
+
+        for (int i = 0; i < str.length(); i++) {
+            char ch = str.charAt(i);
+
+            if (ch == ')') {
+                int count = 0;
+                while (s.pop() != '(') {
+                    count++;
+                }
+                if (count < 1) return true;
+            } else {
+                s.push(ch);
+            }
+        }
+        return false;
+    }
+
+    // ==================================================
+    // Main Method (Testing)
+    // ==================================================
+    public static void main(String[] args) {
+
+        // ---- Stock Span ----
+        int stocks[] = {100, 80, 60, 70, 60, 85, 100};
+        int span[] = new int[stocks.length];
+        stockSpan(stocks, span);
+        System.out.println("Stock Span: " + Arrays.toString(span));
+
+        // ---- Next Greater Element ----
+        int arr[] = {6, 8, 0, 1, 3};
+        System.out.println("Next Greater: " + Arrays.toString(nextGreater(arr)));
+
+        // ---- Parentheses ----
+        System.out.println("Valid: " + isValid("({[]})"));
+        System.out.println("Duplicate: " + isDuplicate("((a+b))"));
+    }
+}
