@@ -1,0 +1,114 @@
+import java.util.*;
+
+public class Stack_Day1_Basics {
+
+    // ==================================================
+    // Stack Implementation using Linked List
+    // ==================================================
+    static class Node {
+        int data;
+        Node next;
+
+        Node(int data) {
+            this.data = data;
+            this.next = null;
+        }
+    }
+
+    static class StackLL {
+        static Node head = null;
+
+        // Check if stack is empty
+        public static boolean isEmpty() {
+            return head == null;
+        }
+
+        // Push operation
+        public static void push(int data) {
+            Node newNode = new Node(data);
+            if (isEmpty()) {
+                head = newNode;
+                return;
+            }
+            newNode.next = head;
+            head = newNode;
+        }
+
+        // Pop operation
+        public static int pop() {
+            if (isEmpty()) {
+                return -1;
+            }
+            int top = head.data;
+            head = head.next;
+            return top;
+        }
+
+        // Peek operation
+        public static int peek() {
+            if (isEmpty()) {
+                return -1;
+            }
+            return head.data;
+        }
+    }
+
+    // ==================================================
+    // Push Element at Bottom of Stack (Recursion)
+    // ==================================================
+    public static void pushBottom(Stack<Integer> s, int data) {
+        if (s.isEmpty()) {
+            s.push(data);
+            return;
+        }
+
+        int top = s.pop();
+        pushBottom(s, data);
+        s.push(top);
+    }
+
+    // ==================================================
+    // Reverse a String using Stack
+    // ==================================================
+    public static String reverse(String str) {
+        Stack<Character> s = new Stack<>();
+
+        for (int i = 0; i < str.length(); i++) {
+            s.push(str.charAt(i));
+        }
+
+        StringBuilder sb = new StringBuilder();
+        while (!s.isEmpty()) {
+            sb.append(s.pop());
+        }
+        return sb.toString();
+    }
+
+    // ==================================================
+    // Main Method (Testing)
+    // ==================================================
+    public static void main(String[] args) {
+
+        // ---- Stack using Linked List ----
+        StackLL.push(10);
+        StackLL.push(20);
+        StackLL.push(30);
+
+        System.out.println("Peek: " + StackLL.peek());
+        System.out.println("Pop: " + StackLL.pop());
+        System.out.println("Pop: " + StackLL.pop());
+        System.out.println("Is Empty: " + StackLL.isEmpty());
+
+        // ---- pushBottom using Java Stack ----
+        Stack<Integer> s = new Stack<>();
+        s.push(1);
+        s.push(2);
+        s.push(3);
+        pushBottom(s, 0);
+        System.out.println("Stack after pushBottom: " + s);
+
+        // ---- Reverse String ----
+        String str = "shreyas";
+        System.out.println("Reversed String: " + reverse(str));
+    }
+}
