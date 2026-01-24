@@ -1,0 +1,90 @@
+import java.util.*;
+
+public class Queue_Day1_Basics {
+
+    // ==================================================
+    // First Non-Repeating Character in a Stream
+    // ==================================================
+    public static void printNonRepeating(String str) {
+        int freq[] = new int[26];
+        Queue<Character> q = new LinkedList<>();
+
+        for (int i = 0; i < str.length(); i++) {
+            char ch = str.charAt(i);
+            q.add(ch);
+            freq[ch - 'a']++;
+
+            while (!q.isEmpty() && freq[q.peek() - 'a'] > 1) {
+                q.remove();
+            }
+
+            if (q.isEmpty()) {
+                System.out.print(-1 + " ");
+            } else {
+                System.out.print(q.peek() + " ");
+            }
+        }
+        System.out.println();
+    }
+
+    // ==================================================
+    // Interleave First Half with Second Half of Queue
+    // ==================================================
+    public static void interleave(Queue<Integer> q) {
+        Queue<Integer> firstHalf = new LinkedList<>();
+        int size = q.size();
+
+        for (int i = 0; i < size / 2; i++) {
+            firstHalf.add(q.remove());
+        }
+
+        while (!firstHalf.isEmpty()) {
+            q.add(firstHalf.remove());
+            q.add(q.remove());
+        }
+    }
+
+    // ==================================================
+    // Reverse a Queue using Stack
+    // ==================================================
+    public static void reverse(Queue<Integer> q) {
+        Stack<Integer> s = new Stack<>();
+
+        while (!q.isEmpty()) {
+            s.push(q.remove());
+        }
+
+        while (!s.isEmpty()) {
+            q.add(s.pop());
+        }
+    }
+
+    // ==================================================
+    // Main Method (Testing)
+    // ==================================================
+    public static void main(String[] args) {
+
+        // First Non-Repeating Character
+        String str = "aabccxb";
+        printNonRepeating(str);
+
+        // Interleave Queue
+        Queue<Integer> q1 = new LinkedList<>();
+        q1.add(1);
+        q1.add(2);
+        q1.add(3);
+        q1.add(4);
+        q1.add(5);
+        q1.add(6);
+        interleave(q1);
+        System.out.println("Interleaved Queue: " + q1);
+
+        // Reverse Queue
+        Queue<Integer> q2 = new LinkedList<>();
+        q2.add(10);
+        q2.add(20);
+        q2.add(30);
+        reverse(q2);
+        System.out.println("Reversed Queue: " + q2);
+    }
+}
