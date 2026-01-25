@@ -1,0 +1,65 @@
+import java.util.*;
+
+public class Greedy_Day1_Basics {
+
+    // ---------------- Balanced Substring Count ----------------
+    public static int balancedPartition(String str) {
+        int r = 0, l = 0, ans = 0;
+
+        for (int i = 0; i < str.length(); i++) {
+            if (str.charAt(i) == 'R') r++;
+            else l++;
+
+            if (r == l) ans++;
+        }
+        return ans;
+    }
+
+    // ---------------- Kth Odd Number in Range ----------------
+    public static int kThOdd(int[] range, int k) {
+        int L = range[0], R = range[1];
+
+        int count = (R - L + 1 + (L % 2 == 1 ? 1 : 0)) / 2;
+        if (k > count) return 0;
+
+        return (R % 2 == 1) ? R - 2 * (k - 1) : (R - 1) - 2 * (k - 1);
+    }
+
+    // ---------------- Lexicographically Smallest String ----------------
+    public static String lexicoSmall(int n, int k) {
+        char arr[] = new char[n];
+        Arrays.fill(arr, 'a');
+
+        k -= n;
+        for (int i = n - 1; i >= 0 && k > 0; i--) {
+            int add = Math.min(25, k);
+            arr[i] += add;
+            k -= add;
+        }
+        return new String(arr);
+    }
+
+    // ---------------- Max Profit (Buy & Sell Stock) ----------------
+    public static int maxProfit(int prices[]) {
+        int buy = prices[0], profit = 0;
+
+        for (int i = 1; i < prices.length; i++) {
+            buy = Math.min(buy, prices[i]);
+            profit = Math.max(profit, prices[i] - buy);
+        }
+        return profit;
+    }
+
+    public static void main(String[] args) {
+        String str = "LRRRRLLRLLRL";
+        System.out.println("Balanced partitions: " + balancedPartition(str));
+
+        int range[] = {2, 10};
+        System.out.println("3rd odd: " + kThOdd(range, 3));
+
+        System.out.println("Lexico smallest: " + lexicoSmall(3, 27));
+
+        int prices[] = {7,1,5,3,6,4};
+        System.out.println("Max profit: " + maxProfit(prices));
+    }
+}
