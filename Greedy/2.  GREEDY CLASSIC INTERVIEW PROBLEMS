@@ -1,0 +1,117 @@
+import java.util.*;
+
+public class Greedy_Day2_Classic {
+
+    // ---------------- Activity Selection ----------------
+    public static void activitySelection() {
+        int st[] = {1,3,0,5,8,5};
+        int end[] = {2,4,6,7,9,9};
+
+        int activities[][] = new int[st.length][3];
+        for (int i = 0; i < st.length; i++) {
+            activities[i][0] = i;
+            activities[i][1] = st[i];
+            activities[i][2] = end[i];
+        }
+
+        Arrays.sort(activities, Comparator.comparingInt(o -> o[2]));
+
+        int count = 1;
+        int lastEnd = activities[0][2];
+
+        for (int i = 1; i < activities.length; i++) {
+            if (activities[i][1] >= lastEnd) {
+                count++;
+                lastEnd = activities[i][2];
+            }
+        }
+        System.out.println("Max Activities: " + count);
+    }
+
+    // ---------------- Fractional Knapsack ----------------
+    public static void fractionalKnapsack() {
+        int val[] = {60,100,120};
+        int wt[] = {10,20,30};
+        int W = 50;
+
+        double ratio[][] = new double[val.length][2];
+        for (int i = 0; i < val.length; i++) {
+            ratio[i][0] = i;
+            ratio[i][1] = val[i] / (double) wt[i];
+        }
+
+        Arrays.sort(ratio, Comparator.comparingDouble(o -> o[1]));
+
+        int capacity = W;
+        double profit = 0;
+
+        for (int i = ratio.length - 1; i >= 0 && capacity > 0; i--) {
+            int idx = (int) ratio[i][0];
+            if (capacity >= wt[idx]) {
+                profit += val[idx];
+                capacity -= wt[idx];
+            } else {
+                profit += ratio[i][1] * capacity;
+                capacity = 0;
+            }
+        }
+        System.out.println("Knapsack Profit: " + profit);
+    }
+
+    // ---------------- Min Absolute Difference ----------------
+    public static void minAbsDiff() {
+        int A[] = {4,1,8,7};
+        int B[] = {2,3,6,5};
+
+        Arrays.sort(A);
+        Arrays.sort(B);
+
+        int sum = 0;
+        for (int i = 0; i < A.length; i++)
+            sum += Math.abs(A[i] - B[i]);
+
+        System.out.println("Min Abs Diff: " + sum);
+    }
+
+    // ---------------- Max Length Chain of Pairs ----------------
+    public static void maxChain() {
+        int pairs[][] = {{5,24},{39,60},{5,28},{27,40},{50,90}};
+        Arrays.sort(pairs, Comparator.comparingInt(o -> o[1]));
+
+        int count = 1;
+        int end = pairs[0][1];
+
+        for (int i = 1; i < pairs.length; i++) {
+            if (pairs[i][0] > end) {
+                count++;
+                end = pairs[i][1];
+            }
+        }
+        System.out.println("Max chain length: " + count);
+    }
+
+    // ---------------- Indian Coins ----------------
+    public static void indianCoins() {
+        Integer coins[] = {1,2,5,10,20,50,100,500,2000};
+        Arrays.sort(coins, Comparator.reverseOrder());
+
+        int amount = 590;
+        int count = 0;
+
+        for (int coin : coins) {
+            while (coin <= amount) {
+                amount -= coin;
+                count++;
+            }
+        }
+        System.out.println("Coins used: " + count);
+    }
+
+    public static void main(String[] args) {
+        activitySelection();
+        fractionalKnapsack();
+        minAbsDiff();
+        maxChain();
+        indianCoins();
+    }
+}
