@@ -1,0 +1,126 @@
+import java.util.*;
+
+public class Trees_Day3_Views_Levels {
+
+    // ==================================================
+    // Node Structure
+    // ==================================================
+    public static class Node {
+        int data;
+        Node left, right;
+
+        Node(int data) {
+            this.data = data;
+            this.left = null;
+            this.right = null;
+        }
+    }
+
+    // ==================================================
+    // Q1. Top View of Binary Tree
+    // ==================================================
+    static class Info {
+        Node node;
+        int hd;
+
+        Info(Node node, int hd) {
+            this.node = node;
+            this.hd = hd;
+        }
+    }
+
+    public static void topView(Node root) {
+        Queue<Info> q = new LinkedList<>();
+        HashMap<Integer, Node> map = new HashMap<>();
+
+        int min = 0, max = 0;
+        q.add(new Info(root, 0));
+        q.add(null);
+
+        while (!q.isEmpty()) {
+            Info curr = q.remove();
+
+            if (curr == null) {
+                if (q.isEmpty()) break;
+                q.add(null);
+            } else {
+                if (!map.containsKey(curr.hd)) {
+                    map.put(curr.hd, curr.node);
+                }
+
+                if (curr.node.left != null) {
+                    q.add(new Info(curr.node.left, curr.hd - 1));
+                    min = Math.min(min, curr.hd - 1);
+                }
+
+                if (curr.node.right != null) {
+                    q.add(new Info(curr.node.right, curr.hd + 1));
+                    max = Math.max(max, curr.hd + 1);
+                }
+            }
+        }
+
+        for (int i = min; i <= max; i++) {
+            System.out.print(map.get(i).data + " ");
+        }
+        System.out.println();
+    }
+
+    // ==================================================
+    // Q2. Print Kth Level Nodes
+    // ==================================================
+    public static void KLevel(Node root, int level, int k) {
+        if (root == null) return;
+
+        if (level == k) {
+            System.out.print(root.data + " ");
+            return;
+        }
+
+        KLevel(root.left, level + 1, k);
+        KLevel(root.right, level + 1, k);
+    }
+
+    // ==================================================
+    // Q3. Kth Ancestor of a Node
+    // ==================================================
+    public static int kAncestor(Node root, int n, int k) {
+        if (root == null) return -1;
+
+        if (root.data == n) return 0;
+
+        int left = kAncestor(root.left, n, k);
+        int right = kAncestor(root.right, n, k);
+
+        if (left == -1 && right == -1) return -1;
+
+        int max = Math.max(left, right);
+        if (max + 1 == k) {
+            System.out.println("Kth Ancestor: " + root.data);
+        }
+        return max + 1;
+    }
+
+    // ==================================================
+    // Main Method
+    // ==================================================
+    public static void main(String[] args) {
+
+        Node root = new Node(1);
+        root.left = new Node(2);
+        root.right = new Node(3);
+        root.left.left = new Node(4);
+        root.left.right = new Node(5);
+        root.right.left = new Node(6);
+        root.right.right = new Node(7);
+
+        System.out.print("Top View: ");
+        topView(root);
+
+        System.out.print("Kth Level (k=2): ");
+        KLevel(root, 1, 2);
+        System.out.println();
+
+        kAncestor(root, 5, 2);
+    }
+}
