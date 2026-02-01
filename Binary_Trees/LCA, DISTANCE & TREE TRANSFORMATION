@@ -1,0 +1,120 @@
+import java.util.*;
+
+public class Trees_Day4_LCA_Transform {
+
+    // ==================================================
+    // Node Structure
+    // ==================================================
+    public static class Node {
+        int data;
+        Node left, right;
+
+        Node(int data) {
+            this.data = data;
+            this.left = null;
+            this.right = null;
+        }
+    }
+
+    // ==================================================
+    // Q1. Find Path from Root to Node
+    // ==================================================
+    public static boolean getPath(Node root, int n, ArrayList<Node> path) {
+        if (root == null) return false;
+
+        path.add(root);
+        if (root.data == n) return true;
+
+        if (getPath(root.left, n, path) ||
+            getPath(root.right, n, path)) {
+            return true;
+        }
+
+        path.remove(path.size() - 1);
+        return false;
+    }
+
+    // ==================================================
+    // Q2. Lowest Common Ancestor (LCA)
+    // ==================================================
+    public static Node lca(Node root, int n1, int n2) {
+        ArrayList<Node> path1 = new ArrayList<>();
+        ArrayList<Node> path2 = new ArrayList<>();
+
+        getPath(root, n1, path1);
+        getPath(root, n2, path2);
+
+        int i = 0;
+        for (; i < path1.size() && i < path2.size(); i++) {
+            if (path1.get(i) != path2.get(i)) break;
+        }
+
+        return path1.get(i - 1);
+    }
+
+    // ==================================================
+    // Q3. Distance from LCA to Node
+    // ==================================================
+    public static int lcaDist(Node root, int n) {
+        if (root == null) return -1;
+        if (root.data == n) return 0;
+
+        int left = lcaDist(root.left, n);
+        int right = lcaDist(root.right, n);
+
+        if (left == -1 && right == -1) return -1;
+        return Math.max(left, right) + 1;
+    }
+
+    // ==================================================
+    // Q4. Minimum Distance Between Two Nodes
+    // ==================================================
+    public static int minDist(Node root, int n1, int n2) {
+        Node lca = lca(root, n1, n2);
+        return lcaDist(lca, n1) + lcaDist(lca, n2);
+    }
+
+    // ==================================================
+    // Q5. Transform to Sum Tree
+    // ==================================================
+    public static int transform(Node root) {
+        if (root == null) return 0;
+
+        int left = transform(root.left);
+        int right = transform(root.right);
+
+        int oldData = root.data;
+        root.data = left + right;
+        return oldData + root.data;
+    }
+
+    // ==================================================
+    // Preorder Traversal (Verification)
+    // ==================================================
+    public static void preorder(Node root) {
+        if (root == null) return;
+        System.out.print(root.data + " ");
+        preorder(root.left);
+        preorder(root.right);
+    }
+
+    // ==================================================
+    // Main Method
+    // ==================================================
+    public static void main(String[] args) {
+
+        Node root = new Node(1);
+        root.left = new Node(2);
+        root.right = new Node(3);
+        root.left.left = new Node(4);
+        root.left.right = new Node(5);
+        root.right.left = new Node(6);
+        root.right.right = new Node(7);
+
+        System.out.println("Min Distance (4,7): " + minDist(root, 4, 7));
+
+        transform(root);
+        System.out.print("Preorder after Sum Tree: ");
+        preorder(root);
+    }
+}
