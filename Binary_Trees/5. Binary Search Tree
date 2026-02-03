@@ -11,7 +11,8 @@ public class BinarySearchTree {
             this.data = data;
         }
     }
-    //insert a node or create binary tree
+
+    // insert a node or create binary tree
     public static Node insert(Node root, int val) {
         if (root == null) {
             root = new Node(val);
@@ -37,40 +38,39 @@ public class BinarySearchTree {
         inorder(root.right);
     }
 
-    //search 
-    public static boolean search(Node root, int key){
-        if(root == null){
+    // search
+    public static boolean search(Node root, int key) {
+        if (root == null) {
             return false;
         }
-        if(root.data == key){
+        if (root.data == key) {
             return true;
         }
-        if(root.data < key){
+        if (root.data < key) {
             return search(root.right, key);
         } else {
             return search(root.left, key);
         }
     }
 
-    //delete a node
-    public static Node delete(Node root, int key){
-        if(root.data < key){
+    // delete a node
+    public static Node delete(Node root, int key) {
+        if (root.data < key) {
             root.right = delete(root.right, key);
-        } else if(root.data > key){
+        } else if (root.data > key) {
             root.left = delete(root.left, key);
-        }
-        else{
-            //leaf Node
-            if(root.left == null && root.right == null){
+        } else {
+            // leaf Node
+            if (root.left == null && root.right == null) {
                 return null;
-            } 
-            //single child
-            if(root.left == null){
+            }
+            // single child
+            if (root.left == null) {
                 return root.right;
-            } else if(root.right == null){
+            } else if (root.right == null) {
                 return root.left;
             }
-            //double child
+            // double child
             else {
                 Node IS = inOrderSuccessor(root.right);
                 root.data = IS.data;
@@ -79,72 +79,90 @@ public class BinarySearchTree {
         }
         return root;
     }
-    
-    public static Node inOrderSuccessor(Node root){
-        while(root.left != null){
+
+    public static Node inOrderSuccessor(Node root) {
+        while (root.left != null) {
             root = root.left;
         }
         return root;
     }
 
-    public static void printInRange(Node root, int k1, int k2){
-        if(root == null){
+    public static void printInRange(Node root, int k1, int k2) {
+        if (root == null) {
             return;
         }
 
-        if(root.data >= k1 && root.data <= k2){
+        if (root.data >= k1 && root.data <= k2) {
             printInRange(root.left, k1, k2);
             System.out.print(root.data + " ");
             printInRange(root.right, k1, k2);
-        }
-        else if(root.data > k2){
+        } else if (root.data > k2) {
             printInRange(root.left, k1, k2);
         } else {
             printInRange(root.right, k1, k2);
         }
     }
 
-    public static void printPath(ArrayList<Integer> path){
-        for(int i=0; i<path.size();i++){
-            System.out.print(path.get(i)+ "-->");
+    public static void printPath(ArrayList<Integer> path) {
+        for (int i = 0; i < path.size(); i++) {
+            System.out.print(path.get(i) + "-->");
         }
         System.out.println("Null");
     }
 
-    public static void print2Leaf(Node root, ArrayList<Integer> path){
-        if(root == null){
+    public static void print2Leaf(Node root, ArrayList<Integer> path) {
+        if (root == null) {
             return;
         }
         path.add(root.data);
-        if(root.left == null && root.right == null){
+        if (root.left == null && root.right == null) {
             printPath(path);
         }
         print2Leaf(root.left, path);
         print2Leaf(root.right, path);
-        path.remove(path.size()-1);
+        path.remove(path.size() - 1);
     }
-    //check if a binary tree is valid || validate a binary tree
-    public static boolean isValid(Node root, Node min, Node max){
-        if(root == null){
+
+    // check if a binary tree is valid || validate a binary tree
+    public static boolean isValid(Node root, Node min, Node max) {
+        if (root == null) {
             return true;
         }
 
-        if(min != null && root.data <= min.data){
+        if (min != null && root.data <= min.data) {
             return false;
         }
-        if(max != null && root.data >= max.data){
+        if (max != null && root.data >= max.data) {
             return false;
         }
 
         return isValid(root.left, min, root) && isValid(root.right, root, max);
     }
+
+    // mirror a binary tree
+    public static Node mirror(Node root) {
+        if (root == null) {
+            return null;
+        }
+
+        Node leftSubtree = mirror(root.left);
+        Node rightSubtree = mirror(root.right);
+
+        root.left = rightSubtree;
+        root.right = leftSubtree;
+        return root;
+    }
+
     public static void main(String[] args) {
-        int value[] = { 8,5,3,1,4,6,10,11,14};
+        int value[] = { 8, 5, 3, 1, 4, 6, 10, 11, 14 };
         Node root = null;
 
-        for (int i = 0; i < value.length; i++) {    
+        for (int i = 0; i < value.length; i++) {
             root = insert(root, value[i]);
         }
-        System.out.println(isValid(root, null, null));
+        inorder(root);
+        mirror(root);
+        System.out.println();
+        inorder(root);
     }
 }
