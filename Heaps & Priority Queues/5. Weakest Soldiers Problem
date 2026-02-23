@@ -1,0 +1,46 @@
+import java.util.*;
+
+public class Part5_WeakestSoldiers {
+
+    static class Soldiers implements Comparable<Soldiers>{
+        int solCount;
+        int idx;
+
+        Soldiers(int count, int idx){
+            this.solCount = count;
+            this.idx = idx;
+        }
+
+        @Override
+        public int compareTo(Soldiers s2){
+            if(this.solCount == s2.solCount){
+                return this.idx - s2.idx;
+            }
+            return this.solCount - s2.solCount;
+        }
+    }
+
+    public static void weakestSoldiers(){
+
+        int soldiers [][] = {
+            {1,0,0,0},
+            {1,1,1,1},
+            {1,0,0,0},
+            {1,0,0,0}
+        };
+
+        PriorityQueue<Soldiers> pq = new PriorityQueue<>();
+
+        for(int i=0; i<soldiers.length; i++){
+            int count = 0;
+            for(int j=0; j<soldiers[0].length; j++){
+                count += soldiers[i][j];
+            }
+            pq.add(new Soldiers(count, i));
+        }
+
+        for(int i=0; i<2; i++){
+            System.out.println("Weak Row: " + pq.remove().idx);
+        }
+    }
+}
