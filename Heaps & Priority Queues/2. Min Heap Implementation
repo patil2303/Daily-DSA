@@ -1,0 +1,61 @@
+import java.util.*;
+
+public class Part2_Custom_MinHeap {
+
+    static class Heaps {
+
+        ArrayList<Integer> arr = new ArrayList<>();
+
+        // Add element to heap
+        public void add(int data) {
+            arr.add(data);
+
+            int i = arr.size() - 1;
+            int parent = (i - 1) / 2;
+
+            // Bubble up
+            while(i > 0 && arr.get(i) < arr.get(parent)){
+                Collections.swap(arr, i, parent);
+                i = parent;
+                parent = (i - 1) / 2;
+            }
+        }
+
+        public int peek(){
+            return arr.get(0);
+        }
+
+        // Heapify (top to bottom)
+        private void heapify(int i){
+            int minIdx = i;
+            int left = 2*i + 1;
+            int right = 2*i + 2;
+
+            if(left < arr.size() && arr.get(left) < arr.get(minIdx)){
+                minIdx = left;
+            }
+
+            if(right < arr.size() && arr.get(right) < arr.get(minIdx)){
+                minIdx = right;
+            }
+
+            if(minIdx != i){
+                Collections.swap(arr, i, minIdx);
+                heapify(minIdx);
+            }
+        }
+
+        public int remove(){
+            if(arr.size() == 0) return -1;
+
+            int data = arr.get(0);
+
+            Collections.swap(arr, 0, arr.size()-1);
+            arr.remove(arr.size()-1);
+
+            heapify(0);
+
+            return data;
+        }
+    }
+}
