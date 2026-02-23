@@ -1,0 +1,37 @@
+import java.util.*;
+
+public class Part1_Comparable_Student {
+
+    // ==================================================
+    // Student class implementing Comparable
+    // Smaller rank = Higher priority
+    // ==================================================
+    static class Student implements Comparable<Student> {
+        int rank;
+        String name;
+
+        Student(int rank, String name) {
+            this.rank = rank;
+            this.name = name;
+        }
+
+        // Defines sorting logic inside PriorityQueue
+        @Override
+        public int compareTo(Student s2) {
+            return this.rank - s2.rank;  // ascending order
+        }
+    }
+
+    public static void main(String[] args) {
+
+        PriorityQueue<Student> pq = new PriorityQueue<>();
+
+        pq.add(new Student(3, "A"));
+        pq.add(new Student(1, "B"));
+        pq.add(new Student(2, "C"));
+
+        while(!pq.isEmpty()){
+            System.out.println(pq.remove().name);
+        }
+    }
+}
