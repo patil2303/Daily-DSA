@@ -1,0 +1,43 @@
+import java.util.*;
+
+public class Part2_Union_Intersection {
+
+    public static void main(String[] args) {
+
+        int arr1[] = {7,3,9};
+        int arr2[] = {6,3,9,2,9,4};
+
+        HashSet<Integer> set = new HashSet<>();
+
+        // UNION
+        for(int val : arr1){
+            set.add(val);
+        }
+
+        for(int val : arr2){
+            set.add(val);
+        }
+
+        System.out.print("Union = ");
+        for(Integer el : set){
+            System.out.print(el + " ");
+        }
+
+        System.out.println();
+
+        // INTERSECTION
+        set.clear();
+
+        for(int val : arr1){
+            set.add(val);
+        }
+
+        System.out.print("Intersection = ");
+        for(int val : arr2){
+            if(set.contains(val)){
+                System.out.print(val + " ");
+                set.remove(val); // avoid duplicates
+            }
+        }
+    }
+}
