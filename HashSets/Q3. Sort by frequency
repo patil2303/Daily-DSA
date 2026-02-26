@@ -1,0 +1,33 @@
+public String frequencySort(String s) {
+
+    HashMap<Character, Integer> map = new HashMap<>();
+
+    // Step 1: Count frequency
+    for (int i = 0; i < s.length(); i++) {
+        map.put(s.charAt(i), map.getOrDefault(s.charAt(i), 0) + 1);
+    }
+
+    // Step 2: Max Heap based on frequency
+    PriorityQueue<Map.Entry<Character, Integer>> pq =
+            new PriorityQueue<>((a, b) ->
+                    b.getValue() - a.getValue()
+            );
+
+    pq.addAll(map.entrySet());
+
+    // Step 3: Build result
+    StringBuilder res = new StringBuilder();
+
+    while (!pq.isEmpty()) {
+        Map.Entry<Character, Integer> entry = pq.poll();
+        char ch = entry.getKey();
+        int freq = entry.getValue();
+
+        while (freq > 0) {
+            res.append(ch);
+            freq--;
+        }
+    }
+
+    return res.toString();
+}
