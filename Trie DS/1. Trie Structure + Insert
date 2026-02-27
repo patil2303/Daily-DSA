@@ -33,4 +33,38 @@ public class Trie {
 
         curr.eow = true;
     }
+
+// Search Method
+public boolean search(String key) {
+    Node curr = root;
+
+    for (int i = 0; i < key.length(); i++) {
+        int idx = key.charAt(i) - 'a';
+
+        if (curr.children[idx] == null) {
+            return false;
+        }
+
+        curr = curr.children[idx];
+    }
+
+    return curr.eow;
 }
+
+public static void main(String[] args) {
+        // String words[] = {"the", "a", "there", "their", "any", "thee"};
+        // for(int i=0; i<words.length; i++){
+        //     insert(words[i]);
+        // }
+
+        // System.out.println(search("thee"));
+
+        String arr[] = {"i", "like", "sam", "samsung", "mobile", "ice"};
+        for(int i=0; i<arr.length; i++){
+            insert(arr[i]);
+        }
+
+        String key = "ilikesamsung";
+        System.out.println(wordBreak(key));
+}
+
