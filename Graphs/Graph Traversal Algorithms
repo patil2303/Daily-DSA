@@ -2,36 +2,53 @@ import java.util.*;
 
 public class GraphTraversal {
 
-    public static void BFS(ArrayList<Edge>[] graph) {
-        Queue<Integer> q = new LinkedList<>();
-        boolean isVisited[] = new boolean[graph.length];
+    // BFS Traversal
+    public static void bfs(ArrayList<Edge>[] graph) {
 
-        q.add(0);
+        boolean[] visited = new boolean[graph.length];
+        Queue<Integer> queue = new LinkedList<>();
 
-        while (!q.isEmpty()) {
-            int curr = q.remove();
+        queue.add(0);
 
-            if (!isVisited[curr]) {
+        while (!queue.isEmpty()) {
+
+            int curr = queue.remove();
+
+            if (!visited[curr]) {
+
                 System.out.print(curr + " ");
-                isVisited[curr] = true;
+                visited[curr] = true;
 
-                for (int i = 0; i < graph[curr].size(); i++) {
-                    Edge e = graph[curr].get(i);
-                    q.add(e.dest);
+                for (Edge e : graph[curr]) {
+                    queue.add(e.dest);
                 }
             }
         }
     }
 
-    public static void DFS(ArrayList<Edge>[] graph, int curr, boolean isVisit[]) {
+    // DFS Traversal (Handles disconnected graphs)
+    public static void dfs(ArrayList<Edge>[] graph) {
+
+        boolean[] visited = new boolean[graph.length];
+
+        for (int i = 0; i < graph.length; i++) {
+
+            if (!visited[i]) {
+                dfsUtil(graph, i, visited);
+            }
+        }
+    }
+
+    // DFS Utility Function
+    private static void dfsUtil(ArrayList<Edge>[] graph, int curr, boolean[] visited) {
+
         System.out.print(curr + " ");
-        isVisit[curr] = true;
+        visited[curr] = true;
 
-        for (int i = 0; i < graph[curr].size(); i++) {
-            Edge e = graph[curr].get(i);
+        for (Edge e : graph[curr]) {
 
-            if (!isVisit[e.dest]) {
-                DFS(graph, e.dest, isVisit);
+            if (!visited[e.dest]) {
+                dfsUtil(graph, e.dest, visited);
             }
         }
     }
