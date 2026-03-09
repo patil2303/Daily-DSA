@@ -1,1 +1,50 @@
+ public static void printAllPath(ArrayList<Edge> graph[], int src, int des, String path){
+        if(src == des){
+            System.out.println(path +  des);
+            return;
+        }
 
+        for(int i=0; i<graph[src].size(); i++){
+            Edge e = graph[src].get(i);
+            printAllPath(graph, e.dest, des, path + src);
+        }
+    }
+
+    public static void main(String[] args) {
+
+        int V = 6;
+
+        @SuppressWarnings("unchecked")
+        ArrayList<Edge>[] graph = new ArrayList[V];
+
+        for (int i = 0; i < V; i++) {
+            graph[i] = new ArrayList<>();
+        }
+
+        graph[0].add((new Edge(0, 3)));
+
+        graph[2].add(new Edge(2, 3));
+
+        graph[3].add(new Edge(3, 1));
+
+        graph[4].add(new Edge(4, 0));
+        graph[4].add(new Edge(4, 1));
+
+        graph[5].add(new Edge(5, 0));
+        graph[5].add(new Edge(5, 2));
+
+        // BFS(graph);
+        // DFS(graph);
+
+        // ❌ previous example had destination 7 which doesn't exist
+        // System.out.println(hasPath(graph, 0, 7, new boolean[V]));
+
+        // System.out.println(detectCycle(graph));
+
+        // System.out.println(isBipartite(graph));
+
+        // BFStopSort(graph);
+
+        printAllPath(graph, 5, 1, "");
+    }
+}
