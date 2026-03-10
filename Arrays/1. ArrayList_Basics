@@ -2,7 +2,7 @@ import java.util.*;
 
 public class ArrayList_Basic {
 
-    // ==================================================
+
     // Q1. Container With Most Water (Two Pointer Approach)
     // Concept: Two Pointers + Greedy
     // Time: O(n), Space: O(1)
