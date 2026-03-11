@@ -8,7 +8,7 @@ public class Day2_BST_Queries {
     static class Node {
         int data;
         Node left, right;
-
+ 
         Node(int data) {
             this.data = data;
         }
