@@ -10,7 +10,7 @@ public class Day3_LargestBST_in_BT {
         Node left, right;
 
         Node(int data) {
-            this.data = data;
+            this.data = data; 
         }
     }
 
