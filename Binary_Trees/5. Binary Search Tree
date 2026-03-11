@@ -8,7 +8,7 @@ public class BinarySearchTree {
         Node left;
 
         Node(int data) {
-            this.data = data;
+            this.data = data; 
         }
     }
 
