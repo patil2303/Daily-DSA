@@ -1,0 +1,55 @@
+import java.util.*;
+
+public class UnionFind {
+
+    static int parent[];
+    static int rank[];
+
+    // Initialize DS
+    public static void init(int n) {
+        parent = new int[n];
+        rank = new int[n];
+
+        for (int i = 0; i < n; i++) {
+            parent[i] = i;
+        }
+    }
+
+    // Find with Path Compression
+    public static int find(int x) {
+        if (x == parent[x]) {
+            return x;
+        }
+        return parent[x] = find(parent[x]);
+    }
+
+    // Union by Rank
+    public static void union(int a, int b) {
+        int parA = find(a);
+        int parB = find(b);
+
+        if (parA == parB)
+            return;
+
+        if (rank[parA] == rank[parB]) {
+            parent[parB] = parA;
+            rank[parA]++;
+        } else if (rank[parA] < rank[parB]) {
+            parent[parA] = parB;
+        } else {
+            parent[parB] = parA;
+        }
+    }
+
+    public static void main(String[] args) {
+        int n = 5;
+        init(n);
+
+        union(0, 1);
+        union(1, 2);
+        union(3, 4);
+
+        System.out.println(find(2)); // same set as 0,1
+        System.out.println(find(4)); // different set
+    }
+}
