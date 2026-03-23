@@ -1,0 +1,69 @@
+import java.util.*;
+
+public class CheapestFlight {
+
+    static class Edge {
+        int dest, wt;
+
+        public Edge(int d, int w) {
+            this.dest = d;
+            this.wt = w;
+        }
+    }
+
+    static class Info {
+        int node, cost, stops;
+
+        public Info(int n, int c, int s) {
+            this.node = n;
+            this.cost = c;
+            this.stops = s;
+        }
+    }
+
+    public static int cheapestFlight(int n, int[][] flights, int src, int dest, int k) {
+        ArrayList<Edge>[] graph = new ArrayList[n];
+
+        for (int i = 0; i < n; i++) {
+            graph[i] = new ArrayList<>();
+        }
+
+        for (int[] f : flights) {
+            graph[f[0]].add(new Edge(f[1], f[2]));
+        }
+
+        int dist[] = new int[n];
+        Arrays.fill(dist, Integer.MAX_VALUE);
+
+        Queue<Info> q = new LinkedList<>();
+        q.add(new Info(src, 0, 0));
+
+        while (!q.isEmpty()) {
+            Info curr = q.remove();
+
+            if (curr.stops > k)
+                continue;
+
+            for (Edge e : graph[curr.node]) {
+                if (curr.cost + e.wt < dist[e.dest]) {
+                    dist[e.dest] = curr.cost + e.wt;
+                    q.add(new Info(e.dest, dist[e.dest], curr.stops + 1));
+                }
+            }
+        }
+
+        return dist[dest] == Integer.MAX_VALUE ? -1 : dist[dest];
+    }
+
+    public static void main(String[] args) {
+        int n = 4;
+        int flights[][] = {
+            {0, 1, 100},
+            {1, 2, 100},
+            {2, 3, 100},
+            {0, 3, 500}
+        };
+
+        System.out.println(cheapestFlight(n, flights, 0, 3, 1));
+    }
+}
