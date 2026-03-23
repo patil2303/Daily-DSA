@@ -1,0 +1,78 @@
+import java.util.*;
+
+public class PrimsMST {
+
+    static class Edge {
+        int dest, wt;
+
+        public Edge(int d, int w) {
+            this.dest = d;
+            this.wt = w;
+        }
+    }
+
+    static class Pair implements Comparable<Pair> {
+        int node, cost;
+
+        public Pair(int n, int c) {
+            this.node = n;
+            this.cost = c;
+        }
+
+        @Override
+        public int compareTo(Pair p2) {
+            return this.cost - p2.cost;
+        }
+    }
+
+    public static void prims(ArrayList<Edge>[] graph) {
+        boolean vis[] = new boolean[graph.length];
+        PriorityQueue<Pair> pq = new PriorityQueue<>();
+
+        pq.add(new Pair(0, 0)); // start from node 0
+        int finalCost = 0;
+
+        while (!pq.isEmpty()) {
+            Pair curr = pq.remove();
+
+            if (!vis[curr.node]) {
+                vis[curr.node] = true;
+                finalCost += curr.cost;
+
+                for (int i = 0; i < graph[curr.node].size(); i++) {
+                    Edge e = graph[curr.node].get(i);
+                    pq.add(new Pair(e.dest, e.wt));
+                }
+            }
+        }
+
+        System.out.println("Minimum Cost = " + finalCost);
+    }
+
+    public static void main(String[] args) {
+        int V = 4;
+
+        @SuppressWarnings("unchecked")
+        ArrayList<Edge>[] graph = new ArrayList[V];
+
+        for (int i = 0; i < V; i++) {
+            graph[i] = new ArrayList<>();
+        }
+
+        // Graph creation
+        graph[0].add(new Edge(1, 10));
+        graph[0].add(new Edge(2, 15));
+        graph[0].add(new Edge(3, 30));
+
+        graph[1].add(new Edge(0, 10));
+        graph[1].add(new Edge(3, 40));
+
+        graph[2].add(new Edge(0, 15));
+        graph[2].add(new Edge(3, 50));
+
+        graph[3].add(new Edge(1, 40));
+        graph[3].add(new Edge(2, 50));
+
+        prims(graph);
+    }
+}
