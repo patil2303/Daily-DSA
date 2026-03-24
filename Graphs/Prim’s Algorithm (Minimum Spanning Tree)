@@ -3,7 +3,7 @@ import java.util.*;
 public class PrimsMST {
 
     static class Edge {
-        int dest, wt;
+        int dest, wt;  
 
         public Edge(int d, int w) {
             this.dest = d;
