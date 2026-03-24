@@ -8,7 +8,7 @@ public static boolean isCycle(ArrayList<Edge>[] graph) {
         if (!vis[i]) {
             if (isCycleUtil(graph, i, vis, stack)) {
                 return true;
-            }
+            }  
         }
     }
 
