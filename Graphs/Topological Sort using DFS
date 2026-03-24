@@ -9,7 +9,7 @@ public static void topSort(ArrayList<Edge> graph[]){
         }
 
         while(!s.isEmpty()){
-            System.out.print(s.pop() + " ");
+            System.out.print(s.pop() + " "); 
         }
     }
 
