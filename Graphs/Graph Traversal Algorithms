@@ -9,7 +9,7 @@ public class GraphTraversal {
         Queue<Integer> queue = new LinkedList<>();
 
         queue.add(0);
-
+  
         while (!queue.isEmpty()) {
 
             int curr = queue.remove();
