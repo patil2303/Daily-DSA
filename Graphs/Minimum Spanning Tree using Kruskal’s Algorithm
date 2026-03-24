@@ -9,7 +9,7 @@ public class KruskalMST {
             this.src = s;
             this.dest = d;
             this.wt = w;
-        }
+        } 
 
         @Override
         public int compareTo(Edge e2) {
