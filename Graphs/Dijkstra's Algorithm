@@ -7,7 +7,7 @@ static class Pair implements Comparable<Pair> {
             this.dist = dist;
         }
 
-        @Override
+        @Override 
         public int compareTo(Pair p2) {
             return this.dist - p2.dist;
         }
