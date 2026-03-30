@@ -1,0 +1,69 @@
+import java.util.*;
+
+public class KosarajuAlgo {
+
+    public static void topSort(ArrayList<Edge> graph[], int curr, boolean vis[], Stack<Integer> s) {
+        vis[curr] = true;
+
+        for (int i = 0; i < graph[curr].size(); i++) {
+            Edge e = graph[curr].get(i);
+            if (!vis[e.dest]) {
+                topSort(graph, e.dest, vis, s);
+            }
+        }
+
+        s.push(curr);
+    }
+
+    public static void dfs(ArrayList<Edge> graph[], int curr, boolean vis[]) {
+        vis[curr] = true;
+        System.out.print(curr + " ");
+
+        for (int i = 0; i < graph[curr].size(); i++) {
+            Edge e = graph[curr].get(i);
+            if (!vis[e.dest]) {
+                dfs(graph, e.dest, vis);
+            }
+        }
+    }
+
+    public static void kosaraju(ArrayList<Edge> graph[], int V) {
+
+        // Step 1: Topological sort
+        Stack<Integer> s = new Stack<>();
+        boolean vis[] = new boolean[V];
+
+        for (int i = 0; i < V; i++) {
+            if (!vis[i]) {
+                topSort(graph, i, vis, s);
+            }
+        }
+
+        // Step 2: Transpose graph
+        @SuppressWarnings("unchecked")
+        ArrayList<Edge> transpose[] = new ArrayList[V];
+
+        for (int i = 0; i < V; i++) {
+            transpose[i] = new ArrayList<>();
+            vis[i] = false;
+        }
+
+        for (int i = 0; i < V; i++) {
+            for (int j = 0; j < graph[i].size(); j++) {
+                Edge e = graph[i].get(j);
+                transpose[e.dest].add(new Edge(e.dest, e.src));
+            }
+        }
+
+        // Step 3: DFS on transposed graph
+        while (!s.isEmpty()) {
+            int curr = s.pop();
+
+            if (!vis[curr]) {
+                System.out.print("SCC --> ");
+                dfs(transpose, curr, vis);
+                System.out.println();
+            }
+        }
+    }
+}
