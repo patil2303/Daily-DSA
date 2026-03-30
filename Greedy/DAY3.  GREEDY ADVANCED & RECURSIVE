@@ -9,7 +9,7 @@ public class Greedy_Day3_Advanced {
         if (k == 1) {
             for (int i = index; i < arr.length; i++)
                 sum += arr[i];
-            maxSum = Math.max(maxSum, sum);
+            maxSum = Math.max(maxSum, sum);  
             ans = Math.min(ans, maxSum);
             return;
         }
