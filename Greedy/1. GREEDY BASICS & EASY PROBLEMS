@@ -13,7 +13,7 @@ public class Greedy_Day1_Basics {
             if (r == l) ans++;
         }
         return ans;
-    }
+    }  
 
     // ---------------- Kth Odd Number in Range ----------------
     public static int kThOdd(int[] range, int k) {
