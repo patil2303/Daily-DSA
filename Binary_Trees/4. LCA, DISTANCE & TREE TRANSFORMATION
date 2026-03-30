@@ -12,7 +12,7 @@ public class Trees_Day4_LCA_Transform {
         Node(int data) {
             this.data = data;
             this.left = null;
-            this.right = null;
+            this.right = null;   
         }
     }
 
