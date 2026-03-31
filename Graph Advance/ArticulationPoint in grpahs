@@ -6,7 +6,7 @@ public class ArticulationPoint {
                            int dt[], int low[], boolean vis[],
                            boolean ap[], int time) {
 
-        vis[curr] = true;
+        vis[curr] = true;  
         dt[curr] = low[curr] = ++time;
         int children = 0;
 
