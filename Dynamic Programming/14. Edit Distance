@@ -8,7 +8,7 @@ public static int editDistance(String s1, String s2){
                     dp[i][j] = j;
                 }
                 if(j == 0){
-                    dp[i][j] = i;
+                    dp[i][j] = i; 
                 }
             }
         }
